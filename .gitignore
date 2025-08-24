@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+model_cache/
+models/
+output/
+pyAudioAnalysis/
+wav2vec2_checkpoints/
+faiss_index/

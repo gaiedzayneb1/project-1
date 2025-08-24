@@ -1,0 +1,40 @@
+# --- Whisper & Audio ---
+openai-whisper
+pydub
+torchaudio
+librosa
+
+# --- NLP & Traduction ---
+transformers
+sentencepiece
+langdetect
+huggingface_hub
+
+# --- Documents (PDF, DOCX) ---
+python-docx
+PyMuPDF
+
+# --- API FastAPI ---
+fastapi
+uvicorn
+
+# --- LangChain & Vector Store ---
+langchain
+langchain-community
+langchain-ollama
+langchain-openai
+faiss-cpu
+
+# --- Speech & TTS ---
+pyttsx3
+speechbrain
+
+# --- Utilitaires ---
+typing_extensions
+
+#sentiemnt_analysis
+speechbrain>=1.0
+torchaudio
+librosa
+transformers
+

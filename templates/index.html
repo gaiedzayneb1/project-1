@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant Multilingue</title>
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3a0ca3;
+      --success-color: #4cc9f0;
+      --danger-color: #f72585;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --gray-color: #6c757d;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      color: var(--dark-color);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 992px) {
+      .container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: var(--primary-color);
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      background: white;
+      padding: 24px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+
+    .section:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+      color: var(--secondary-color);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--light-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2 i {
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    select, input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    select:focus, input[type="file"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: var(--danger-color);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #d1145a;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: var(--success-color);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #2fb0d4;
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .message {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .message.info {
+      background: #cce5ff;
+      color: #004085;
+      border: 1px solid #b8daff;
+    }
+
+    .file-list {
+      margin-top: 16px;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .file-item:last-child {
+      border-bottom: none;
+    }
+
+    .file-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .file-preview {
+      margin-top: 8px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      max-height: 150px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    audio {
+      margin-top: 16px;
+      width: 100%;
+      border-radius: 30px;
+    }
+
+    .recorder-controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    #status {
+      margin-top: 16px;
+      font-style: italic;
+      color: var(--gray-color);
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+
+    .response-container {
+      background: #f8f9fa;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+
+    .loader {
+      display: none;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .emotion-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-right: 6px;
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .lang-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-left: 10px;
+      background: var(--success-color);
+      color: white;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-globe-americas"></i> Assistant Multilingue</h1>
+      <p>Posez des questions vocalement et obtenez des réponses basées sur vos documents</p>
+    </header>
+
+    <!-- Section Gestion Documents -->
+    <div class="section">
+      <h2><i class="fas fa-file-alt"></i> Gérer les documents traduits</h2>
+      <form id="docForm" method="post" enctype="multipart/form-data" action="/translate">
+        <div class="form-group">
+          <label>Documents existants :</label>
+          <div class="file-list" id="existingFiles">
+            {% if files %}
+              {% for file in files %}
+                <div class="file-item">
+                  <div>
+                    <input type="checkbox" name="delete_files" value="{{ file }}" id="file_{{ loop.index }}">
+                    <label for="file_{{ loop.index }}">{{ file }}</label>
+                  </div>
+                  <div class="file-actions">
+                    <button type="button" class="btn btn-success preview-btn" data-filename="{{ file }}">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="file-preview" id="preview-{{ file }}"></div>
+              {% endfor %}
+            {% else %}
+              <p>Aucun document traduit disponible.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="files">Ajouter de nouveaux fichiers (.txt, .pdf, .docx) :</label>
+          <input type="file" id="files" name="files" multiple>
+        </div>
+
+        <div class="form-group">
+          <label for="target_lang">Langue cible (optionnel) :</label>
+          <select name="target_lang" id="target_lang">
+            <option value="">Garder la langue originale</option>
+            <option value="fr">Français</option>
+            <option value="en">Anglais</option>
+            <option value="ar">Arabe</option>
+          </select>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" name="replace_all" id="replace_all">
+          <label for="replace_all">Remplacer tous les anciens fichiers</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-sync-alt"></i> Mettre à jour les documents
+          <div class="loader" id="docLoader"></div>
+        </button>
+      </form>
+
+      {% if message %}
+        <div class="message {{ 'success' if '✅' in message else 'error' if '❌' in message else 'info' }}">
+          {{ message }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Section Micro -->
+    <div class="section">
+      <h2><i class="fas fa-microphone"></i> Poser une question par micro</h2>
+      
+      <p>La réponse sera automatiquement dans la langue de votre question</p>
+
+      <div class="recorder-controls">
+        <button id="startBtn" class="btn btn-primary pulse">
+          <i class="fas fa-microphone"></i> Démarrer enregistrement
+        </button>
+        <button id="stopBtn" class="btn btn-danger" disabled>
+          <i class="fas fa-stop"></i> Arrêter
+        </button>
+      </div>
+
+      <p id="status"></p>
+
+      <div class="response-container">
+        <div id="result"></div>
+        <audio id="audioPlayer" controls></audio>
+      </div>
+      
+      <div class="loader" id="audioLoader" style="display: none; margin: 20px auto;"></div>
+    </div>
+  </div>
+
+  <script>
+    // 🎤 Gestion du micro
+    let mediaRecorder;
+    let audioChunks = [];
+
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const status = document.getElementById("status");
+    const resultDiv = document.getElementById("result");
+    const audioPlayer = document.getElementById("audioPlayer");
+    const audioLoader = document.getElementById("audioLoader");
+    const docLoader = document.getElementById("docLoader");
+    const docForm = document.getElementById("docForm");
+
+    // Afficher/Masquer le loader pendant le traitement des documents
+    docForm.addEventListener('submit', () => {
+      docLoader.style.display = 'inline-block';
+    });
+
+    // Prévisualisation des fichiers
+    document.querySelectorAll('.preview-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const filename = btn.getAttribute('data-filename');
+        const previewDiv = document.getElementById(`preview-${filename}`);
+        
+        if (previewDiv.style.display === 'block') {
+          previewDiv.style.display = 'none';
+          return;
+        }
+        
+        try {
+          const response = await fetch(`/preview/${filename}`);
+          const data = await response.json();
+          
+          if (data.type === 'text') {
+            previewDiv.textContent = data.content.length > 500 
+              ? data.content.substring(0, 500) + '...' 
+              : data.content;
+          } else {
+            previewDiv.textContent = data.content;
+          }
+          
+          previewDiv.style.display = 'block';
+        } catch (error) {
+          previewDiv.textContent = 'Erreur lors du chargement de la prévisualisation';
+          previewDiv.style.display = 'block';
+        }
+      });
+    });
+
+    startBtn.onclick = async () => {
+      audioChunks = [];
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = e => { 
+          if (e.data.size > 0) audioChunks.push(e.data); 
+        };
+        
+        mediaRecorder.onstop = async () => {
+          const blob = new Blob(audioChunks, { type: "audio/webm" });
+          const formData = new FormData();
+          formData.append("file", blob, "recording.webm");
+
+          status.textContent = "⏳ Envoi et traitement...";
+          audioLoader.style.display = 'block';
+          resultDiv.innerHTML = '';
+          
+          try {
+            const response = await fetch("/ask_micro", { method: "POST", body: formData });
+            const data = await response.json();
+
+            audioLoader.style.display = 'none';
+            
+            if (data.error) {
+              resultDiv.innerHTML = `<p style="color:var(--danger-color)">❌ ${data.error}</p>`;
+            } else {
+              let emotionsHtml = '';
+              if (data.emotions_actions && data.emotions_actions.length > 0) {
+                emotionsHtml = '<div style="margin-top:10px">';
+                data.emotions_actions.forEach(item => {
+                  emotionsHtml += `<span class="emotion-badge">${item}</span>`;
+                });
+                emotionsHtml += '</div>';
+              }
+              
+              // Ajouter un badge indiquant la langue de réponse
+              const langNames = {
+                "fr": "Français",
+                "en": "Anglais",
+                "ar": "Arabe"
+              };
+              const langBadge = `<span class="lang-badge">${langNames[data.response_lang] || data.response_lang}</span>`;
+              
+              resultDiv.innerHTML = `
+                <p><strong>Texte transcrit :</strong> ${data.transcribed_text}</p>
+                <p><strong>Réponse :</strong> ${data.response} ${langBadge}</p>
+                ${emotionsHtml}
+              `;
+              
+              if (data.audio_url) {
+                audioPlayer.src = data.audio_url;
+                audioPlayer.style.display = "block";
+                audioPlayer.play();
+              }
+            }
+          } catch (err) {
+            audioLoader.style.display = 'none';
+            resultDiv.innerHTML = `<p style="color:var(--danger-color)">⚠️ Erreur: ${err.message}</p>`;
+          }
+          status.textContent = "";
+        };
+
+        mediaRecorder.start();
+        status.textContent = "🎙️ Enregistrement en cours... Parlez maintenant";
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        startBtn.classList.remove('pulse');
+      } catch (error) {
+        status.textContent = "❌ Erreur d'accès au microphone";
+        console.error("Erreur d'accès au microphone:", error);
+      }
+    };
+
+    stopBtn.onclick = () => {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        startBtn.classList.add('pulse');
+        status.textContent = "⏹️ Enregistrement terminé";
+      }
+    };
+
+    // Vérification de la compatibilité du navigateur
+    window.onload = () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert("Votre navigateur ne supporte pas l'enregistrement audio. Veuillez utiliser un navigateur moderne.");
+        startBtn.disabled = true;
+      }
+    };
+  </script>
+</body>
+</html>
